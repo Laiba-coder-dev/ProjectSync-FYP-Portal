@@ -1,0 +1,55 @@
+Formal Requirements Specification Document: FYP-Portal (ProjectSync)
+
+1. Shell & Architectural Requirements (Non-Functional)
+------------------------------------------------------
+1.1 Authentication & Role-Based Access Control (RBAC)
+* Mechanism: Session handling must be implemented via a robust ProtectedRoute.tsx component.
+* State Preservation: Must maintain location state (state={{ from: location }}) to ensure seamless post-login redirection.
+* Roles Supported (5): student, supervisor, pmo, external_panel, exam_cell
+
+1.2 UI Viewport & Layout Bounds
+* Modal Boundaries: Modals must have strict boundaries (max-h-[90vh] overflow-y-auto) to ensure content is accessible on smaller screens without breaking layout.
+* Table Layouts: Responsive horizontal containment is mandatory (w-full overflow-x-auto) for all data tables.
+* File Upload Components: Compact horizontal upload cards must be constrained to <= 80px in height.
+
+1.3 Input State Stability
+* Component Scope: All sub-components and input fields must be declared at the module scope (not inline within parent components).
+* Stable Keys: Rendering lists and dynamic fields must use stable keys to prevent DOM re-mounting, cursor jumping, or visual blinking during user typing interactions.
+
+1.4 Backend Robustness
+* CORS Policy: Strict binding to authorized frontend origins.
+* Multipart File Uploads: APIs handling files must explicitly use [Consumes("multipart/form-data")] with [FromForm] attribute bindings.
+* Safety Guards: Implementation of zero-division guards across all grading and statistical calculations.
+* Standardized API Responses: All endpoints must adhere to a standard JSON structure with success, data, error, and message fields.
+
+
+2. Functional Requirements (FRs)
+------------------------------------------------------
+FR-1: Proposals & Cohorts
+* Group Sizes: Support dynamic creation of student groups ranging from 1 to 3 members.
+* Cohort Tracking: Segregate and track groups based on their academic semester:
+  - SEM_7 for Final Year Project 1 (FYP-1).
+  - SEM_8 for Final Year Project 2 (FYP-2).
+
+FR-2: AI-Assisted Supervisor Recommendation
+* Document Parsing: Support ingestion and parsing of student-uploaded proposal documents in .pdf and .docx formats.
+* Scoring Engine: Compute both direct domain overlap and semantic content match against the expertise profiles of the 13 verified faculty members.
+* Ranking & Filtering: Filter out supervisors who have reached their maximum group capacity (maxGroups), and return the top 3-5 ranked supervisors.
+
+FR-3: Automated Panel Scheduling
+* Data Ingestion: Read from 3 core Excel workbooks: Timetable, Teacher Expertise, and Projects.
+* Clash-Free Generation: Produce a conflict-free schedule allocating panels to projects based on domain expertise and availability.
+* Export: Provide native browser capabilities to export the generated schedule into CSV or Excel formats.
+
+FR-4: Individual Grading Mechanisms
+* Semester 7 Grading (100M Total):
+  - PMO: 5 marks
+  - Supervisor: 30 marks
+  - Panel Average: 65 marks
+* Semester 8 Grading (100M Total):
+  - Internal Evaluation (50M): PMO: 5 marks, Supervisor: 10 marks, Panel Average: 35 marks.
+  - External Evaluation (50M): Evaluated by external panel.
+
+FR-5: Result Publication Gate
+* Locking Mechanism: Grades and final results are strictly gated from student view.
+* Publication: Results are only visible to students after the PMO locks the evaluations and the Exam Cell explicitly publishes them.

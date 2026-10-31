@@ -1,0 +1,147 @@
+================================================================================
+EXACT ENVIRONMENT REPLICATION GUIDE - PROJECT COMPASS
+================================================================================
+
+This document provides a single, unified reference to clone, build, and run the 
+Project Compass application exactly as it runs in the original developer’s system.
+
+CRITICAL NOTICE: 
+This guide contains the exact Production/Development credentials used in the 
+original pipeline. By following this guide, you will connect to the exact same 
+database, run the exact same codebase, and see the exact same data as the original 
+developer, with zero modifications.
+
+--------------------------------------------------------------------------------
+1. PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+Project Compass is an advanced Final Year Project (FYP) management portal 
+designed for academic institutions.
+
+Tech Stack:
+- Frontend: React 18, TypeScript, Vite
+- Styling: Tailwind CSS, shadcn/ui
+- Backend (BaaS): Firebase Firebase
+- Database: Firebase Firestore
+- Storage: Firebase Storage
+- Media: Cloudinary (for image uploads)
+
+--------------------------------------------------------------------------------
+2. PREREQUISITES
+--------------------------------------------------------------------------------
+To run the project identically to the original developer, ensure the following 
+exact tooling is present:
+
+- Node.js: v20.x
+- Package Manager: npm (v10.x+)
+- Version Control: Git 
+(No separate local Database or Firebase CLI installation is required, as the 
+project connects seamlessly to the managed cloud backend).
+
+--------------------------------------------------------------------------------
+3. INSTALLATION STEPS
+--------------------------------------------------------------------------------
+Run the following exact commands in your terminal:
+
+1. Clone the repository:
+   $ git clone https://github.com/mrfool05/Project-Compass.git
+
+2. Navigate into the project folder:
+   $ cd Project-Compass
+
+3. Install frontend dependencies:
+   $ npm install
+
+--------------------------------------------------------------------------------
+4. ENVIRONMENT CONFIGURATION (EXACT CREDENTIALS)
+--------------------------------------------------------------------------------
+To replicate the original environment, you must not use placeholders. 
+Create a new file named `.env` in the root folder of the project (`FYP-Portal/.env`) 
+and paste the following EXACT contents into it:
+
+VITE_FIREBASE_API_KEY=AIzaSyD__koKv9rB8FuXKhHghtUyuS1fz3xXWJU
+VITE_FIREBASE_AUTH_DOMAIN=project-compass-198db.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=project-compass-198db
+VITE_FIREBASE_STORAGE_BUCKET=project-compass-198db.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=555508981398
+VITE_FIREBASE_APP_ID=1:555508981398:web:cb909b8471df9e3e772cb7
+VITE_FIREBASE_MEASUREMENT_ID=G-S659Z3ZS3Q
+
+# Cloudinary Configuration
+VITE_CLOUDINARY_CLOUD_NAME=dhwdil3cv
+VITE_CLOUDINARY_UPLOAD_PRESET=fyp-portal
+
+These are the direct keys from the original developer. They bypass the need for 
+any secondary Firebase provisioning.
+
+--------------------------------------------------------------------------------
+5. FIREBASE SETUP
+--------------------------------------------------------------------------------
+No Firebase Setup is required! 
+Because you are using the exact `.env` configuration provided above, the 
+application is pre-configured to connect to the centralized original Firebase 
+instance. 
+
+- Authentication is fully active.
+- Firestore holds the original DB structure and records.
+- Storage rules are pre-configured.
+
+You do not need to seed data. When you run the application, you will inherit the 
+live data state the original developer was working with.
+
+--------------------------------------------------------------------------------
+6. RUNNING THE APPLICATION
+--------------------------------------------------------------------------------
+Once dependencies are installed and the exact `.env` file is placed at the root:
+
+1. Start the React/Vite Frontend server:
+   $ npm run dev
+
+2. Access the Application:
+   Open your browser and navigate to: http://localhost:8080
+
+Because this is a serverless application utilizing Firebase BaaS, there is no 
+backend express server to run. The frontend connects directly to the cloud backend.
+
+--------------------------------------------------------------------------------
+7. DEFAULT ACCOUNTS & DATA
+--------------------------------------------------------------------------------
+Since you are connected to the primary Firebase server, you have access to the 
+active user base. All dashboards (Student, Supervisor, PMO, Admin, External, 
+Exam Cell) work out-of-the-box.
+
+You can use the built-in Registration page (http://localhost:8080/register) to 
+create new users.
+If seeded data exists, standard test emails follow this format:
+- Student: student@test.com
+- Supervisor: supervisor@test.com
+- PMO: pmo@test.com
+- Exam Cell: examcell@test.com
+- External Evaluator: external@test.com
+- Admin Checkout: admin@example.com
+
+*(Password conventionally is 123456 or password123 depending on your last testing phase, or simply re-register a new account of your choice.)*
+
+--------------------------------------------------------------------------------
+8. FEATURE VERIFICATION
+--------------------------------------------------------------------------------
+Follow these steps to confirm you are successfully mirroring the application:
+
+[ ] Login Works:
+    - Attempt to log in or register a new user. If successful, your BaaS connection
+      is identical to the original developer's.
+[ ] Dashboards Load Correctly:
+    - Upon logging in, verify that the routing engine automatically delegates you 
+      to the correct dashboard (e.g., `/student/dashboard`). 
+    - Verify that no "Configuration Error" is displayed.
+[ ] Announcements & Notifications Work:
+    - As a PMO/Supervisor, create a test announcement. Log in as a student and
+      verify the bell icon populates with the data from Firebase Firestore.
+[ ] Evaluation & Marks Sharing:
+    - Navigate to Supervisor -> Marks Sharing and verify that you can see assigned
+      projects and that their marks successfully sync with the database.
+[ ] No Data Missing:
+    - Because you are connected to `project-compass-198db`, all historical data 
+      and uploads behave exactly as they did on the author's local machine.
+
+--------------------------------------------------------------------------------
+Enjoy perfect 1:1 local environment replication!

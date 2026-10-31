@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
+    restart: unless-stopped
+    # If a backend service is added later, link it here:
+    # depends_on:
+    #   - backend
+
+  # Example optional backend setup placeholder
+  # backend:
+  #   image: node:20
+  #   working_dir: /app/backend
+  #   volumes:
+  #     - ./backend:/app/backend
+  #   command: npm run start
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - ./backend/.env
